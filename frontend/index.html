@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Reviewer | Elevate Your Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <nav class="navbar glass-panel">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+            <span>AI<span class="highlight">Reviewer</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="nav-review" class="active">
+                <span class="nav-dot"></span>Review
+            </a>
+            <a href="#" id="nav-history">History</a>
+            <a href="#" id="nav-settings">Settings</a>
+        </div>
+        <button class="btn btn-outline" id="nav-signin"><i class="fa-solid fa-user"></i> Sign In</button>
+    </nav>
+
+    <!-- ==================== SIGN IN MODAL ==================== -->
+    <div class="modal-overlay hidden" id="signin-modal">
+        <div class="modal glass-panel">
+            <button class="modal-close" id="signin-close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-icon-badge">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+            <h2>Welcome Back</h2>
+            <p class="modal-subtitle">Sign in to save your review history across devices.</p>
+            <form id="signin-form" class="modal-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="signin-email" placeholder="Email address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="signin-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</button>
+            </form>
+            <div class="modal-divider"><span>or continue with</span></div>
+            <div class="social-login">
+                <button class="btn btn-social" id="btn-google"><i class="fa-brands fa-google"></i> Google</button>
+                <button class="btn btn-social" id="btn-github"><i class="fa-brands fa-github"></i> GitHub</button>
+            </div>
+            <p class="modal-footer-text">Don't have an account? <a href="#" id="switch-to-signup">Create one</a></p>
+        </div>
+    </div>
+
+    <!-- ==================== HISTORY PANEL ==================== -->
+    <div class="slide-panel hidden" id="history-panel">
+        <div class="slide-panel-inner glass-panel">
+            <div class="slide-panel-header">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Review History</h2>
+                <button class="modal-close" id="history-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="slide-panel-body" id="history-list">
+                <div class="empty-state" id="history-empty">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>No reviews yet</p>
+                    <span>Submit your first code review and it will appear here.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SETTINGS PANEL ==================== -->
+    <div class="slide-panel hidden" id="settings-panel">
+        <div class="slide-panel-inner glass-panel">
+            <div class="slide-panel-header">
+                <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+                <button class="modal-close" id="settings-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="slide-panel-body">
+                <div class="settings-group">
+                    <h3>Appearance</h3>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-label">Dark Mode</span>
+                            <span class="setting-desc">Toggle between dark and light themes</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-darkmode" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-label">Animations</span>
+                            <span class="setting-desc">Enable or disable UI animations</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-animations" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>API Configuration</h3>
+                    <div class="setting-row vertical">
+                        <div class="setting-info">
+                            <span class="setting-label">Backend URL</span>
+                            <span class="setting-desc">The URL where your backend server is running</span>
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-server"></i>
+                            <input type="url" id="setting-api-url" value="http://localhost:5000/api/reviews" placeholder="http://localhost:5000/api/reviews">
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>Editor</h3>
+                    <div class="setting-row">
+                        <div class="setting-info">
+                            <span class="setting-label">Font Size</span>
+                            <span class="setting-desc">Adjust the code editor font size</span>
+                        </div>
+                        <select id="setting-font-size" class="setting-select">
+                            <option value="13">13px</option>
+                            <option value="14">14px</option>
+                            <option value="15" selected>15px</option>
+                            <option value="16">16px</option>
+                            <option value="18">18px</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-full" id="settings-save"><i class="fa-solid fa-check"></i> Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <!-- ==================== HERO ==================== -->
+        <header class="hero">
+            <div class="hero-eyebrow animate-up">
+                <span class="eyebrow-dot"></span>
+                <span>Powered by Claude AI</span>
+            </div>
+            <h1 class="animate-up delay-1">
+                Flawless Code,<br>
+                <span class="highlight-gradient">Powered by AI</span>
+            </h1>
+            <p class="subtitle animate-up delay-2">Paste your code below to instantly identify bugs, security vulnerabilities, and optimization opportunities.</p>
+
+            <div class="hero-stats animate-up delay-2">
+                <div class="stat">
+                    <span class="stat-num">99<span class="stat-unit">%</span></span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">12<span class="stat-unit">+</span></span>
+                    <span class="stat-label">Languages</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">&lt;3<span class="stat-unit">s</span></span>
+                    <span class="stat-label">Review Time</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== WORKSPACE ==================== -->
+        <section class="workspace animate-up delay-2">
+            <div class="editor-container glass-panel">
+                <div class="panel-header">
+                    <div class="window-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <div class="editor-title">
+                        <i class="fa-solid fa-file-code"></i>
+                        <span>code_review.js</span>
+                    </div>
+                    <div class="language-selector">
+                        <i class="fa-solid fa-chevron-down"></i>
+                        <select id="language-select">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="cpp">C++</option>
+                            <option value="html">HTML/CSS</option>
+                            <option value="auto" selected>Auto Detect</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="editor-body">
+                    <div class="line-numbers" id="line-numbers">
+                        <span>1</span>
+                    </div>
+                    <div class="textarea-wrapper">
+                        <textarea id="code-input" placeholder="// Paste your code here and let AI do the heavy lifting..." spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="footer-meta">
+                        <span id="char-count">0 chars</span>
+                        <span class="meta-sep">·</span>
+                        <span id="line-count">0 lines</span>
+                    </div>
+                    <button id="review-btn" class="btn btn-primary">
+                        <span class="btn-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                        <span class="btn-text">Review Code</span>
+                        <span class="btn-shine"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="glass-panel hidden">
+                <div class="loader-container">
+                    <div class="ai-loader-wrap">
+                        <div class="ai-loader"></div>
+                        <div class="loader-rings">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                        </div>
+                    </div>
+                    <div class="loader-text-wrap">
+                        <p class="loading-text">Analyzing logic and structure...</p>
+                        <div class="loader-steps">
+                            <div class="loader-step active"><span></span>Parsing AST</div>
+                            <div class="loader-step"><span></span>Security scan</div>
+                            <div class="loader-step"><span></span>Generating report</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Dashboard -->
+            <div id="results-dashboard" class="results-container hidden">
+                <div class="dashboard-header">
+                    <div class="dashboard-title">
+                        <div class="title-accent"></div>
+                        <h2>Review Results</h2>
+                    </div>
+                    <div class="score-badge">
+                        <div class="score-ring">
+                            <svg viewBox="0 0 60 60">
+                                <circle class="score-track" cx="30" cy="30" r="25"/>
+                                <circle class="score-fill" cx="30" cy="30" r="25" id="score-circle"/>
+                            </svg>
+                        </div>
+                        <div class="score-text">
+                            <span class="score-value">85</span>
+                            <span class="score-label">/100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Bugs Card -->
+                    <div class="result-card glass-panel alert-warning">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-bug"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Bugs & Issues</h3>
+                                <span class="card-tag">Critical</span>
+                            </div>
+                        </div>
+                        <ul class="issue-list" id="bugs-list"></ul>
+                    </div>
+
+                    <!-- Security Card -->
+                    <div class="result-card glass-panel alert-danger">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Security</h3>
+                                <span class="card-tag">Vulnerabilities</span>
+                            </div>
+                        </div>
+                        <ul class="issue-list" id="security-list"></ul>
+                    </div>
+
+                    <!-- Optimization Card -->
+                    <div class="result-card glass-panel alert-info">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div class="card-title">
+                                <h3>Optimizations</h3>
+                                <span class="card-tag">Performance</span>
+                            </div>
+                        </div>
+                        <ul class="issue-list" id="optimization-list"></ul>
+                    </div>
+                </div>
+
+                <!-- Suggested Fixes Full Card -->
+                <div class="full-card glass-panel">
+                    <div class="card-header">
+                        <div class="card-icon card-icon--merge">
+                            <i class="fa-solid fa-code-merge"></i>
+                        </div>
+                        <div class="card-title">
+                            <h3>Suggested Architecture & Fixes</h3>
+                            <span class="card-tag">AI Analysis</span>
+                        </div>
+                    </div>
+                    <div class="markdown-body" id="general-feedback"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="logo logo--small">
+                <div class="logo-icon logo-icon--sm"><i class="fa-solid fa-microchip"></i></div>
+                <span>AI<span class="highlight">Reviewer</span></span>
+            </div>
+            <p class="footer-copy">Built for engineers who care about quality.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Line numbers & char/line count (UI only, no backend interaction)
+        const codeInput = document.getElementById('code-input');
+        const lineNumbers = document.getElementById('line-numbers');
+        const charCount = document.getElementById('char-count');
+        const lineCount = document.getElementById('line-count');
+
+        function updateEditorMeta() {
+            const val = codeInput.value;
+            const lines = val ? val.split('\n') : [''];
+            const count = lines.length;
+
+            // Update char/line count
+            charCount.textContent = `${val.length} chars`;
+            lineCount.textContent = `${count} line${count !== 1 ? 's' : ''}`;
+
+            // Update line numbers
+            lineNumbers.innerHTML = lines.map((_, i) => `<span>${i + 1}</span>`).join('');
+        }
+
+        codeInput.addEventListener('input', updateEditorMeta);
+        codeInput.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = codeInput.scrollTop;
+        });
+
+        updateEditorMeta();
+    </script>
+</body>
+</html>s

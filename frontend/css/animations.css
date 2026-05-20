@@ -1,0 +1,297 @@
+/* ============================================================
+   AI CODE REVIEWER — Animations & Micro-interactions
+   ============================================================ */
+
+/* ============================================================
+   AMBIENT MOTION
+   ============================================================ */
+@keyframes float {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(3%, 4%) scale(1.04); }
+    66%  { transform: translate(-2%, 3%) scale(0.97); }
+    100% { transform: translate(5%, -2%) scale(1.06); }
+}
+
+/* ============================================================
+   ENTRY ANIMATIONS
+   ============================================================ */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.animate-up {
+    opacity: 0;
+    animation: slideUpFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.12s; }
+.delay-2 { animation-delay: 0.24s; }
+.delay-3 { animation-delay: 0.36s; }
+
+/* ============================================================
+   AI LOADER — Premium Conic Spinner
+   ============================================================ */
+.ai-loader {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative;
+    background: conic-gradient(
+        from 0deg,
+        var(--primary) 0%,
+        var(--secondary) 40%,
+        transparent 70%
+    );
+    animation: spin 1.6s linear infinite;
+    box-shadow: 0 0 24px var(--primary-glow), 0 0 8px var(--secondary-glow);
+}
+
+.ai-loader::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: var(--bg-base);
+    border-radius: 50%;
+}
+
+.ai-loader::before {
+    content: '\f0d0';
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    color: var(--secondary);
+    font-size: 1.1rem;
+    animation: pulse-icon 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-icon {
+    from {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.85);
+        filter: drop-shadow(0 0 4px var(--secondary));
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: drop-shadow(0 0 10px var(--secondary));
+    }
+}
+
+/* ============================================================
+   LOADING TEXT — Gradient Shimmer
+   ============================================================ */
+.loading-text {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    background: linear-gradient(
+        90deg,
+        var(--text-main) 0%,
+        var(--secondary) 35%,
+        var(--primary-light) 55%,
+        var(--text-main) 100%
+    );
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes shimmer {
+    0%   { background-position: 200% center; }
+    100% { background-position: -100% center; }
+}
+
+/* ============================================================
+   LOADER STEP SEQUENCE
+   ============================================================ */
+@keyframes stepActivate {
+    0%   { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+/* Cycle through loader steps */
+.loader-step:nth-child(1) { animation: stepActivate 0.4s ease forwards; }
+.loader-step:nth-child(2) { animation: stepActivate 0.4s ease 1s forwards; opacity: 0.3; }
+.loader-step:nth-child(3) { animation: stepActivate 0.4s ease 2s forwards; opacity: 0.3; }
+
+/* ============================================================
+   CARD ENTRANCE — Results Dashboard
+   ============================================================ */
+.results-container .result-card {
+    animation: cardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.results-container .result-card:nth-child(1) { animation-delay: 0.05s; }
+.results-container .result-card:nth-child(2) { animation-delay: 0.15s; }
+.results-container .result-card:nth-child(3) { animation-delay: 0.25s; }
+.results-container .full-card               { animation: cardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards; }
+
+@keyframes cardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ============================================================
+   SCORE RING DRAW-IN
+   ============================================================ */
+@keyframes drawRing {
+    from { stroke-dashoffset: 157; }
+}
+
+.score-fill {
+    animation: drawRing 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
+}
+
+/* ============================================================
+   BUTTON RIPPLE
+   ============================================================ */
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-primary:active::after { opacity: 1; }
+
+/* ============================================================
+   NAVBAR ENTRANCE
+   ============================================================ */
+.navbar {
+    animation: navbarDrop 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes navbarDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================================
+   HERO STAT NUMBERS — Count-up Pulse
+   ============================================================ */
+.stat-num {
+    animation: statPulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s backwards;
+}
+
+@keyframes statPulse {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.stat:nth-child(1) .stat-num { animation-delay: 0.55s; }
+.stat:nth-child(3) .stat-num { animation-delay: 0.65s; }
+.stat:nth-child(5) .stat-num { animation-delay: 0.75s; }
+
+/* ============================================================
+   LOGO ICON GLOW PULSE
+   ============================================================ */
+.logo-icon {
+    animation: logoPulse 4s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+    0%, 100% { box-shadow: 0 0 16px rgba(108, 99, 255, 0.25); }
+    50%       { box-shadow: 0 0 28px rgba(108, 99, 255, 0.5), 0 0 50px rgba(0, 229, 195, 0.15); }
+}
+
+/* ============================================================
+   INPUT FOCUS GLOW
+   ============================================================ */
+.input-group input:focus {
+    animation: inputGlow 0.3s ease forwards;
+}
+
+@keyframes inputGlow {
+    from { box-shadow: none; }
+    to   { box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.25); }
+}
+
+/* ============================================================
+   EYEBROW BADGE ENTRANCE
+   ============================================================ */
+.hero-eyebrow {
+    animation: eyebrowPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+}
+
+@keyframes eyebrowPop {
+    from { opacity: 0; transform: scale(0.85) translateY(8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* ============================================================
+   SLIDE PANEL BACKDROP BLUR — progressive enhancement
+   ============================================================ */
+.slide-panel::before {
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   NAV LINK UNDERLINE SWEEP
+   ============================================================ */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 4px; left: 50%;
+    width: 0; height: 2px;
+    background: var(--primary-light);
+    border-radius: 1px;
+    transform: translateX(-50%);
+    transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-links a:hover::after { width: 40%; }
+.nav-links a.active::after { width: 0; } /* Active uses bg highlight instead */
+
+/* ============================================================
+   RESULT CARD LIST ITEM ENTRY
+   ============================================================ */
+.issue-list li {
+    animation: listItemSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.issue-list li:nth-child(1) { animation-delay: 0.05s; }
+.issue-list li:nth-child(2) { animation-delay: 0.10s; }
+.issue-list li:nth-child(3) { animation-delay: 0.15s; }
+.issue-list li:nth-child(4) { animation-delay: 0.20s; }
+
+@keyframes listItemSlide {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
